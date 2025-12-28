@@ -10,8 +10,10 @@ import {
     createError,
     isDeleting,
     deleteError,
-    selectedItems
+    selectedItems,
+    selectedItemIds,
 } from "../../domain/items/items.selectors";
+import { DeleteBanner } from "./DeleteBanner";
 
 export function ItemsPage() {
     const { state, effects } = useItems();
@@ -23,6 +25,7 @@ export function ItemsPage() {
     const deleting = isDeleting(state);
     const dError = deleteError(state);
     const selected = selectedItems(state);
+    const canCreate = !deleting;
     const canDelete = selected.length > 0 && !deleting;
 
     useEffect(() => {
@@ -56,8 +59,9 @@ export function ItemsPage() {
                 }}
                 disabled={!canDelete}
             />
+            <DeleteBanner />
 
-            <button onClick={() => setIsNewItemFormOpen(true)}>
+            <button onClick={() => setIsNewItemFormOpen(true)} disabled={!canCreate} >
                 Add Item
             </button>
             <button
@@ -86,7 +90,7 @@ export function ItemsPage() {
                 <>
                     <DeleteForm
                         onDelete={() => {
-                            effects.deleteItems(selectedItems(state))
+                            effects.deleteItems(selectedItemIds(state))
                         }}
                         onCancel={() => setIsDeleteItemsFormOpen(false)}
                         disabled={isDeleting(state)}

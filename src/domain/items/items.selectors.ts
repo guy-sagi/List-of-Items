@@ -23,3 +23,25 @@ export function deleteError(state: ItemsState): string | undefined {
 export function selectedItems(state: ItemsState) {
     return isReady(state) ? state.items.filter(item => item.selected) : [];
 }
+
+export function selectedItemIds(state: ItemsState) {
+    return selectedItems(state).map(item => item.id);
+}
+
+export function deleteState(state: ItemsState) {
+    return state.status === "ready" ? state.delete : null;
+}
+
+export function canUndoDelete(state: ItemsState): boolean {
+    return state.status === "ready" && (state.delete.kind === "deleting" || state.delete.kind === "error");
+}
+
+export function canRetryDelete(state: ItemsState): boolean {
+    return state.status === "ready" && state.delete.kind === "error";
+}
+
+export function deleteCount(state: ItemsState): number {
+    return state.status === "ready" && (state.delete.kind === "deleting" || state.delete.kind === "error")
+    ? state.delete.snapshot.length
+    : 0;
+}

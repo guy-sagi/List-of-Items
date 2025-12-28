@@ -12,7 +12,7 @@ type CreateState =
 type DeleteState =
     | { kind: "idle" }
     | { kind: "deleting"; requestId: number; snapshot: Item[] }
-    | { kind: "error"; error: string };
+    | { kind: "error"; requestId: number; error: string; snapshot: Item[] };
 
 export type ItemsState =
     | { status: "idle"; items: Item[] }
@@ -35,4 +35,7 @@ export type ItemsAction =
     | { type: "CREATE_ERROR"; requestId: number; error: string }
     | { type: "DELETE_START"; requestId: number }
     | { type: "DELETE_SUCCESS"; requestId: number }
-    | { type: "DELETE_ERROR"; requestId: number; error: string };
+    | { type: "DELETE_ERROR"; requestId: number; error: string }
+    | { type: "DELETE_UNDO"; requestId: number }
+    | { type: "DELETE_RETRY"; requestId: number }
+    | { type: "DELETE_COMMIT"; requestId: number };

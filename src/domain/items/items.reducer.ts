@@ -28,7 +28,7 @@ export function listReducer(state: ItemsState, action: ItemsAction): ItemsState 
             return { ...state, items };
         case "CREATE_START":
             if (state.status !== "ready") return state;
-            if (state.create.kind !== "creating") return state;
+            if (state.create.kind === "creating") return state;
 
             return {
                 ...state,
@@ -64,7 +64,6 @@ export function listReducer(state: ItemsState, action: ItemsAction): ItemsState 
 
             return {
                 ...state,
-                items: state.items.filter(item => !item.selected),
                 delete: { kind: "idle" }
             };
         case "DELETE_ERROR":
@@ -72,7 +71,48 @@ export function listReducer(state: ItemsState, action: ItemsAction): ItemsState 
             if (state.delete.kind !== "deleting") return state;
             if (state.delete.requestId !== action.requestId) return state;
 
-            return { ...state, items: state.delete.snapshot, delete: { kind: "error", error: action.error } };
+            return {
+                ...state,
+                items: state.delete.snapshot,
+                delete: {
+                    kind: "error",
+                    requestId: action.requestId,
+                    error: action.error,
+                    snapshot: state.delete.snapshot
+                }
+            };
+        case "DELETE_UNDO":
+            if (state.status !== "ready") return state;
+            if (state.delete.kind !== "deleting" && state.delete.kind !== "error") return state;
+            if (state.delete.requestId !== action.requestId) return state;
+
+            return {
+                ...state,
+                items: state.delete.snapshot,
+                delete: { kind: "idle" }
+            }
+        case "DELETE_RETRY":
+            if (state.status !== "ready") return state;
+            if (state.delete.kind !== "error") return state;
+            if (state.delete.requestId !== action.requestId) return state;
+
+            return {
+                ...state,
+                delete: {
+                    kind: "deleting",
+                    requestId: action.requestId,
+                    snapshot: state.delete.snapshot,
+                },
+            };
+        case "DELETE_COMMIT":
+            if (state.status !== "ready") return state;
+            if (state.delete.kind !== "deleting") return state;
+            if (state.delete.requestId !== action.requestId) return state;
+
+            return {
+                ...state,
+                delete: { kind: "idle"}
+            };
         default:
             const _exhaustive: never = action;
             return state;
