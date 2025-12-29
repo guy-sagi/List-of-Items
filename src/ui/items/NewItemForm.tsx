@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
 
 type Props = {
     onAdd: (title: string) => void;
@@ -8,9 +9,11 @@ type Props = {
 
 export function NewItemForm({ onAdd, onCancel, disabled }: Props) {
     const [title, setTitle] = useState<string>('');
-    const submit = (e: React.FormEvent) => {
+    const trimmed = title.trim();
+    const canSubmit = !!trimmed && !disabled;
+    const submit = (e: FormEvent) => {
         e.preventDefault();
-        const trimmed = title.trim();
+
         if (!trimmed) return;
 
         onAdd(trimmed);
@@ -19,15 +22,17 @@ export function NewItemForm({ onAdd, onCancel, disabled }: Props) {
 
     return (
         <form onSubmit={submit}>
-            <input
-                type="text"
-                value={title}
-                placeholder="New item title"
-                onChange={e => setTitle(e.target.value)}
-                disabled={disabled}
-            />
+            <label>
+            New item title: {" "}
+                <input
+                    type="text"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                    disabled={disabled}
+                />
+            </label>
 
-            <button type="submit" disabled={disabled || !title.trim()}>
+            <button type="submit" disabled={!canSubmit}>
                 Add
             </button>
             {onCancel && (

@@ -1,3 +1,5 @@
+import type { FormEvent } from "react";
+
 type Props = {
     onDelete: () => void;
     onCancel?: () => void;
@@ -5,7 +7,7 @@ type Props = {
 }
 
 export function DeleteForm({ onDelete, onCancel, disabled }: Props) {
-    const submit = (e: React.FormEvent) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
 
         onDelete();
@@ -14,7 +16,7 @@ export function DeleteForm({ onDelete, onCancel, disabled }: Props) {
     return (
         <form onSubmit={submit}>
             <p>Are you sure you want to delete the selected items?</p>
-            <button type="submit" color="red" disabled={disabled}>
+            <button type="submit" disabled={disabled}>
                 Delete
             </button>
             {onCancel && (
