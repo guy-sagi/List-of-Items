@@ -1,5 +1,5 @@
 import { ItemsRepository } from "./items.repository";
-import { Item, ItemsAction } from "./items.types"
+import { ItemsAction } from "./items.types"
 
 type Dispatch = (action: ItemsAction) => void;
 
