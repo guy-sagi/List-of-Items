@@ -25,6 +25,7 @@ export function ItemsPage() {
     const deleting = isDeleting(state);
     const dError = deleteError(state);
     const selected = selectedItems(state);
+    const selectedIds = selectedItemIds(state);
     const canCreate = !deleting;
     const canDelete = selected.length > 0 && !deleting;
 
@@ -61,11 +62,12 @@ export function ItemsPage() {
             />
             <DeleteBanner />
 
-            <button onClick={() => setIsNewItemFormOpen(true)} disabled={!canCreate} >
+            <button onClick={() => setIsNewItemFormOpen(true)} aria-label="Add item" disabled={!canCreate} >
                 Add Item
             </button>
             <button
                 onClick={() => setIsDeleteItemsFormOpen(true)}
+                aria-label="Delete selected items"
                 disabled={!canDelete}
             >
                 Delete
@@ -78,7 +80,7 @@ export function ItemsPage() {
                             effects.addItem(title)
                         }}
                         onCancel={() => setIsNewItemFormOpen(false)}
-                        disabled={isCreating(state)}
+                        disabled={creating}
                     />
 
                     {cError && (
@@ -90,10 +92,10 @@ export function ItemsPage() {
                 <>
                     <DeleteForm
                         onDelete={() => {
-                            effects.deleteItems(selectedItemIds(state))
+                            effects.deleteItems(selectedIds)
                         }}
                         onCancel={() => setIsDeleteItemsFormOpen(false)}
-                        disabled={isDeleting(state)}
+                        disabled={deleting}
                     />
 
                     {dError && (

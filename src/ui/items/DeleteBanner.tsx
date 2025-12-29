@@ -22,31 +22,22 @@ export function DeleteBanner() {
                 <span>Deleting {count}  items...</span>
             )}
 
-            <>
-                {canRetryDelete(state) && (
-                    <>
-                        <span>Delete failed.</span>{" "}
-                        <button onClick={() =>
-                            effects.retryDelete(
-                                requestId,
-                                del.snapshot.map(item => item.id)
-                            )
-                        }>
-                            Retry
-                        </button>{" "}
-                    </>
-                )}
-                {canRetryDelete(state) && (
-                    <>
-                        <button onClick={() => effects.undoDelete(requestId)}>
-                            Undo
-                        </button>
-                    </>
-                )}
-            </>
-
+            {canRetryDelete(state) && (
+                <>
+                    <span>Delete failed.</span>{" "}
+                    <button onClick={() =>
+                        effects.retryDelete(
+                            requestId,
+                            del.snapshot.map(item => item.id)
+                        )
+                    }>
+                        Retry
+                    </button>{" "}
+                </>
+            )}
+            
             {
-                canRetryDelete(state) && (
+                canUndoDelete(state) && (
                     <button onClick={() => effects.undoDelete(requestId)}>
                         Undo
                     </button>
