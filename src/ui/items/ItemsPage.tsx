@@ -39,10 +39,10 @@ export function ItemsPage() {
     }, [ready, creating, cError])
 
     useEffect(() => {
-        if (ready && !deleting && !deleteError) {
+        if (ready && !deleting && !dError) {
             setIsDeleteItemsFormOpen(false);
         }
-    }, [ready, deleting, deleteError])
+    }, [ready, deleting, dError])
 
     return (
         <div>
@@ -57,7 +57,7 @@ export function ItemsPage() {
                 onChecked={(id, selected) => {
                     effects.toggleItemSelection(id, selected)
                 }}
-                disabled={!canDelete}
+                disabled={deleting}
             />
             <DeleteBanner />
 

@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, ReactNode, useMemo } from "react";
 import { ItemsState } from "./items.types";
 import { listReducer } from "./items.reducer"
-import { inMemoryItemsRepository } from "./items.repository.memory";
+import { createHttpItemsRepository } from "./items.repository.http";
 import { createItemsEffects } from "./items.effects";
 
 export type ItemsContextValue = {
@@ -10,12 +10,14 @@ export type ItemsContextValue = {
 }
 
 const ItemsContext = createContext<ItemsContextValue | undefined>(undefined)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001";
+const repo = createHttpItemsRepository(API_BASE_URL);
 
 export function ItemsProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(listReducer, { status: "idle", items: [] });
 
     const effects = useMemo(
-        () => createItemsEffects(inMemoryItemsRepository, dispatch),
+        () => createItemsEffects(repo, dispatch),
         [dispatch]
     );
 
