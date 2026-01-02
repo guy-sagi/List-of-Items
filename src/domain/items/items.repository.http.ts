@@ -1,10 +1,10 @@
 import { ItemsRepository } from "./items.repository";
 import { Item } from "./items.types";
+import { fetchJson } from "../../lib/http/fetchJson";
 
-type ApiItem = {
-    id: string;
-    title: string;
-}
+type ApiItem = { id: string; title: string };
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001";
 
 function assertOk(res: Response) {
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
@@ -14,33 +14,26 @@ function toDomainItem(api: ApiItem): Item {
     return { ...api, selected: false };
 }
 
-export function createHttpItemsRepository(baseUrl: string): ItemsRepository {
+export function createHttpItemsRepository(): ItemsRepository {
     return {
         async loadItems(): Promise<Item[]> {
-            const res = await fetch(`${baseUrl}/items`);
-            assertOk(res);
-            const data = (await res.json()) as ApiItem[];
+            const data = await fetchJson<ApiItem[]>(`${BASE_URL}/items`);
             return data.map(toDomainItem);
         },
 
-        async createItem(title: string): Promise<Item> {
-            const res = await fetch(`${baseUrl}/items`, {
+        async createItem(title: string) {
+            const data = await fetchJson<ApiItem>(`${BASE_URL}/items`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title })
             });
-            assertOk(res);
-            const data = (await res.json()) as ApiItem;
             return toDomainItem(data);
         },
 
-        async deleteItems(ids: string[]): Promise<void> {
-            const res = await fetch(`${baseUrl}/items`, {
+        async deleteItems(ids: string[]) {
+            await fetchJson<void>(`${BASE_URL}/items`, {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ids })
             });
-            assertOk(res);
         },
     };
 }

@@ -15,13 +15,15 @@ export function ItemsList({ items, onChecked, disabled }: Props) {
                 <ul>
                     {items.map(item => (
                         <li key={item.id} style={{ display: "flex" }}>
-                            <input
-                                type="checkbox"
-                                onChange={e => onChecked(item.id, e.target.checked)}
-                                checked={item.selected}
-                                disabled={disabled}
-                            />
-                            <p>{item.title}</p>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    onChange={e => onChecked(item.id, e.target.checked)}
+                                    checked={item.selected}
+                                    disabled={disabled}
+                                />
+                                {item.title}
+                            </label>
                         </li>
                     ))}
                 </ul>
