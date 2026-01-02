@@ -42,6 +42,6 @@ export function canRetryDelete(state: ItemsState): boolean {
 
 export function deleteCount(state: ItemsState): number {
     return state.status === "ready" && (state.delete.kind === "deleting" || state.delete.kind === "error")
-    ? state.delete.snapshot.length
+    ? state.delete.snapshot.length - state.items.length
     : 0;
 }
