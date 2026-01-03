@@ -6,10 +6,6 @@ type ApiItem = { id: string; title: string };
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001";
 
-function assertOk(res: Response) {
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-}
-
 function toDomainItem(api: ApiItem): Item {
     return { ...api, selected: false };
 }
