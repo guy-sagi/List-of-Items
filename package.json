@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "lint": "eslint .",
+    "test": "vitest run",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "api": "json-server --watch db.json --port 3001",
