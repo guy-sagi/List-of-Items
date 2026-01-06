@@ -25,7 +25,11 @@ export function createInMemoryItemsRepository(): ItemsRepository {
 
         async deleteItems(ids: string[]): Promise<void> {
             await delay(200);
-            if (Math.random() < 0.2) throw new Error("Delete failed");
+            if (Math.random() < 0.2) {
+                throw new Error("Delete failed");
+            } else {
+                console.log(`Deleted ids: ${ids}`);
+            }
         },
     };
 };

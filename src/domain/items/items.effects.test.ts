@@ -38,7 +38,7 @@ describe("createItemsEffects", () => {
         });
 
         it("dispatches LOAD_ERROR on failure", async () => {
-            (repo.loadItems as any).mockRejectedValue(new Error("Failed to load list"));
+            (repo.loadItems as any).mockRejectedValue(new Error("Failed to load items"));
 
             const fx = createItemsEffects(repo, dispatch);
             await fx.loadItems();
