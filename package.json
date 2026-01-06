@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "lint": "eslint .",
-    "test": "vitest run",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "test:run": "vitest run",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "api": "json-server --watch db.json --port 3001",
