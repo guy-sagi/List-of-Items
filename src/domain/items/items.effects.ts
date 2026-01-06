@@ -20,7 +20,11 @@ export function createItemsEffects(
             const items = await repo.loadItems();
             dispatch({ type: "LOAD_SUCCESS", requestId, items });
         } catch (err) {
-            dispatch({ type: "LOAD_ERROR", requestId, error: "Failed to load items" });
+            dispatch({
+                type: "LOAD_ERROR",
+                requestId,
+                error: err instanceof Error ? err.message : "Failed to load items"
+            });
         }
     }
 
@@ -54,7 +58,7 @@ export function createItemsEffects(
             dispatch({
                 type: "DELETE_ERROR",
                 requestId,
-                error: err instanceof Error ? err.message : `Delete failed`
+                error: err instanceof Error ? err.message : "Delete failed"
             });
         }
     }
