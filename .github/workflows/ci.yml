@@ -1,37 +1,37 @@
 name: CI
 
 on:
-  on:
-    pull_request:
-      branches:
-        - develop
-        - main
-    push:
-      branches:
-        - develop
-        - main
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '20'
+          cache: 'npm' # This automatically handles caching for you
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
+
+      - name: Type Check
+        # This catches TS errors that Vitest might ignore
+        run: npm run type-check
 
       - name: Lint
         run: npm run lint
 
-      - name: Run tests
-        run: npm test
+      - name: Run Tests
+        run: npm test -- --run # Ensure it doesn't stay in 'watch' mode
 
       - name: Build
         run: npm run build

@@ -2,8 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import { ItemsList } from "../../ui/items/ItemsList";
-import { ItemsPage } from "../../ui/items/ItemsPage";
-import { NewItemForm } from "../../ui/items/NewItemForm";
 
 it("renders empty state when there are no items", () => {
     render(

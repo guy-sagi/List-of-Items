@@ -4,10 +4,7 @@ import { createItemsEffects } from "./items.effects";
 import type { ItemsRepository } from "./items.repository";
 import type { ItemsState, ItemsAction } from "./items.types";
 import {
-    item,
-    readyState,
-    snapshotItems,
-    filteredItems
+    readyState
 } from "./items.test.helpers";
 import type { ReadyItemsState } from "./items.test.helpers";
 
@@ -31,10 +28,6 @@ function createTestStore(initial: ItemsState) {
 
 function expectDeleteIdle(state: ReadyItemsState) {
     expect(state.delete).toEqual({ kind: "idle" });
-}
-
-function expectCreateIdle(state: ReadyItemsState) {
-    expect(state.create).toEqual({ kind: "idle" });
 }
 
 describe("Items integration tests", () => {
