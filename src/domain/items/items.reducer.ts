@@ -128,6 +128,7 @@ export function listReducer(state: ItemsState, action: ItemsAction): ItemsState 
         }
         default: {
             const _exhaustive: never = action;
+            
             throw new Error(`Unhandled action type: ${_exhaustive ?? "Unknown"}`);
         }
     }
